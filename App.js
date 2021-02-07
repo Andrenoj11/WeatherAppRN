@@ -9,7 +9,6 @@ import { colors } from './colors';
 import WeatherDetails from './components/WeatherDetails';
 import { WEATHER_API_KEY } from '@env'
 
-// const WEATHER_API_KEY = '7d9b28e38893ab59b456dd7c6b7e9cdf'
 const BASE_WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?`
 
 export default function App() {
@@ -17,19 +16,19 @@ export default function App() {
   const [currentWeather, setCurrentWeather] = useState(null)
   const [unitSystem, setUnitSystem] = useState('metric')
 
-  async function load(){
+  async function load() {
     setCurrentWeather(null)
     setErrorMessage(null)
     try {
       let { status } = await Location.requestPermissionsAsync()
 
-      if (status !== 'granted'){
+      if (status !== 'granted') {
         setErrorMessage('Access to location is needed to run this app')
         return
       }
 
       const location = await Location.getCurrentPositionAsync()
-      
+
       const { latitude, longitude } = location.coords
 
       const weatherUrl = `${BASE_WEATHER_URL}lat=${latitude}&lon=${longitude}&units=${unitSystem}&appid=${WEATHER_API_KEY}`
@@ -39,7 +38,7 @@ export default function App() {
       const result = await response.json()
       // alert(`Latitude : ${latitude}, Longitude: ${longitude}`)
 
-      if(response.ok){
+      if (response.ok) {
         setCurrentWeather(result)
       } else {
         setErrorMessage(result.message)
@@ -56,7 +55,7 @@ export default function App() {
   }, [unitSystem])
 
 
-  if (currentWeather){
+  if (currentWeather) {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
